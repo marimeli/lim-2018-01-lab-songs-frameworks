@@ -1,71 +1,94 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './App.css';
 import { Container, Row, Col } from 'reactstrap';
 import Navigation from './components/Navigation';
-
+import Artists from './components/Artists';
+import Tracks from './components/Tracks'
 
 class App extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      artists: [],
-      currentArtist: 0
-    }
+  state = {
+    artists: [],
+    currentArtist: 0
   };
 
   componentDidMount() {
     fetch('http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json&limit=10')
       .then(res => res.json())
       .then(data => {
-        const artists = data.artists.artist.map((artist, i) => {
+        const artists = data.artists.artist.map(artist => {
           return {
             name: artist.name,
             image: artist.image[3]['#text']
           }
         })
-        const arrPromisesSongs = [...artists].map(({name}) => 
-        fetch (`http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${name}&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json`)
-        .then(res => res.json())
-        .catch(err => console.error(err)))
+        const arrPromisesSongs = [...artists].map(({ name }) =>
+          fetch(`http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${name}&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json`)
+            .then(res => res.json())
+            .catch(err => console.error(err)))
         Promise.all(arrPromisesSongs)
-        .then(res => console.log(res))
+          .then(songsArr => {
+            artists.forEach((artist, i) => {
+              const tracks = songsArr[i].toptracks.track;
+              artist.songs = tracks.map(track => {
+                return {
+                  trackname: track.name,
+                  count: track.playcount
+                }
+              });
+            })
+            this.setState({
+              artists
+            })
+          })
       })
   };
 
-// `http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${name}&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json`
+  nextArtist = () => {
+    let { artists, currentArtist } = this.state;
+    currentArtist++
 
-render() {
-  console.log('la data 29', this.state.artists);
- const { artists, currentArtist} = this.state;
-  return (
+    if (currentArtist >= artists.length) {
+      currentArtist = 0;
+    }
+    this.setState({
+      currentArtist
+    })
+  };
 
-    <div className="App" >
-      <Navigation></Navigation>
-      <Container className="p-5">
-        <Row>
-          <Col xs="12">
-            {artists.length ?
-              artists.map((artist, i) =>
-                <Row>
-                  <Col xs="12" key={i} className="pt-3">
-                    {artist.name}
-                    <i class="fas fa-heart ml-2"></i>
-                    <i class="fas fa-thumbs-down ml-2"></i>
-                  </Col>
-                  <Col xs="12" key={i} className="pt-3">
-                    <i class="fas fa-angle-left"></i><img src={artist.image} alt="" /><i class="fas fa-angle-right"></i>
-                  </Col>
-                </Row>
-              )[currentArtist]
-              : <p> Cargando ...</p>
-            }
-          </Col>
-        </Row>
-      </Container>
-    </div>
-  );
-}
+
+  // `http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${name}&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json`
+
+  render() {
+    console.log('la data 29', this.state.artists);
+    const { artists, currentArtist } = this.state;
+    return (
+
+      <div className="App" >
+        <Navigation></Navigation>
+        <Container className="p-5">
+          <Row>
+            <Col xs="12">
+              {artists.length ?
+                artists.map((artist, i) =>
+                  <Fragment>
+                    <Artists artist={artist} key={i} nextArtist={this.nextArtist} />
+                    {artist.songs.map((track, i) =>
+                      <Tracks track={track} key={i} />
+                    )}
+                  </Fragment>
+                )[currentArtist]
+                : <p> Cargando ...</p>
+              }
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    );
+  }
+
+
+
 
 };
 

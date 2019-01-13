@@ -2,14 +2,11 @@ import React from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 
 export default class Example extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      collapsed: true
-    };
-  }
+  state = {
+    collapsed: true
+  };
 
-  toggleNavbar= () => {
+  toggleNavbar = () => {
     this.setState({
       collapsed: !this.state.collapsed
     });
