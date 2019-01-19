@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
 
-const Artists = ({ artist, nextArtist }) => (
+const Artists = ({ artist, nextArtist, previousArtist }) => (
   <Row>
     <Col xs="12" className="pt-3">
       {artist.name}
@@ -9,7 +9,7 @@ const Artists = ({ artist, nextArtist }) => (
       <i className="fas fa-thumbs-down ml-2"></i>
     </Col>
     <Col xs="12" className="pt-3">
-      <i className="fas fa-angle-left"></i><img src={artist.image} alt="" /><i className="fas fa-angle-right" onClick={nextArtist} ></i>
+      <i className="fas fa-angle-left" onClick={previousArtist}></i><img src={artist.image} alt="" /><i className="fas fa-angle-right" onClick={nextArtist} ></i>
     </Col>
   </Row>
 );

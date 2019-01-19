@@ -56,6 +56,20 @@ class App extends Component {
     })
   };
 
+  previousArtist = () => {
+    let { artists, currentArtist } = this.state;
+  
+    if (currentArtist === 0) {
+      this.setState({
+        currentArtist: (artists.length - 1)
+      })
+    }
+    else {
+      this.setState({
+        currentArtist: currentArtist - 1
+      })
+    }
+  };
 
   // `http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${name}&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json`
 
@@ -72,7 +86,7 @@ class App extends Component {
               {artists.length ?
                 artists.map((artist, i) =>
                   <Fragment>
-                    <Artists artist={artist} key={i} nextArtist={this.nextArtist} />
+                    <Artists artist={artist} key={i} previousArtist={this.previousArtist} nextArtist={this.nextArtist} />
                     {artist.songs.map((track, i) =>
                       <Tracks track={track} key={i} />
                     )}
