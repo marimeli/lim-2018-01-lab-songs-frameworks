@@ -13,7 +13,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    fetch('http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json&limit=10')
+    fetch('https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json&limit=10')
       .then(res => res.json())
       .then(data => {
         const artists = data.artists.artist.map(artist => {
@@ -23,7 +23,7 @@ class App extends Component {
           }
         })
         const arrPromisesSongs = [...artists].map(({ name }) =>
-          fetch(`http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${name}&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json`)
+          fetch(`https://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${name}&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json`)
             .then(res => res.json())
             .catch(err => console.error(err)))
         Promise.all(arrPromisesSongs)
@@ -71,7 +71,7 @@ class App extends Component {
     }
   };
 
-  // `http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${name}&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json`
+  // `https://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${name}&api_key=5f7e08a667109d3fc3fab0397a234d2a&format=json`
 
   render() {
     console.log('la data 29', this.state.artists);
