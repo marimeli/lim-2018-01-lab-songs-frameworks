@@ -81,8 +81,8 @@ class App extends Component {
       <div className="App" >
         <Navigation></Navigation>
         <Container className="p-5">
-          <Row>
-            <Col xs="12">
+          <Row className="mb-3 pt-3">
+            <Col className="col-12 col-sm-6 m-auto wrap text-center"> 
               {artists.length ?
                 artists.map((artist, i) =>
                   <Fragment>
@@ -100,11 +100,6 @@ class App extends Component {
       </div>
     );
   }
-
-
-
-
 };
-
 
 export default App;

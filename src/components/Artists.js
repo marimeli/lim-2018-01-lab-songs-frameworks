@@ -1,15 +1,12 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
+import '../App.css';
 
 const Artists = ({ artist, nextArtist, previousArtist }) => (
   <Row>
-    <Col xs="12" className="pt-3">
-      {artist.name}
-      <i className="fas fa-heart ml-2"></i>
-      <i className="fas fa-thumbs-down ml-2"></i>
-    </Col>
-    <Col xs="12" className="pt-3">
-      <i className="fas fa-angle-left" onClick={previousArtist}></i><img src={artist.image} alt="" /><i className="fas fa-angle-right" onClick={nextArtist} ></i>
+    <Col xs="12">
+      <i className="arrow previous fas fa-angle-left" onClick={previousArtist}></i><img src={artist.image} alt="artist_photo" className="img-fluid" /><i className="arrow next fas fa-angle-right" onClick={nextArtist} ></i>
+      <h3 className="tc-white mt-3">{artist.name}</h3>
     </Col>
   </Row>
 );

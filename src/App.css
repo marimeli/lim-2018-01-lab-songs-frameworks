@@ -1,0 +1,36 @@
+body {
+  background-color: rgb(0, 0, 0) !important;
+  color: white; 
+ /*  background-color: rgb(15, 15, 15) !important; */
+}
+
+.tc-white {
+  color: white; 
+}
+
+.tc-yellow {
+  color: gray; 
+}
+
+.wrap {
+   position: relative;
+}
+
+.arrow {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  font-size: 30px;
+  color:rgb(147, 166, 159);
+}
+
+.previous {
+  left: 0;
+  margin-left: -30px;
+}
+
+.next {
+  right: 0;
+  margin-right: -30px;
+}
+
